@@ -1,31 +1,125 @@
-ember-on-modifier
-==============================================================================
+# ember-on-modifier
 
-[Short description of the addon.]
+[![Build Status](https://travis-ci.org/buschtoens/ember-on-modifier.svg)](https://travis-ci.org/buschtoens/ember-on-modifier)
+[![npm version](https://badge.fury.io/js/ember-on-modifier.svg)](http://badge.fury.io/js/ember-on-modifier)
+[![Download Total](https://img.shields.io/npm/dt/ember-on-modifier.svg)](http://badge.fury.io/js/ember-on-modifier)
+[![Ember Observer Score](https://emberobserver.com/badges/ember-on-modifier.svg)](https://emberobserver.com/addons/ember-on-modifier)
+[![Ember Versions](https://img.shields.io/badge/Ember.js%20Versions-%5E2.18%20%7C%7C%20%5E3.0-brightgreen.svg)](https://travis-ci.org/buschtoens/ember-on-modifier)
+[![ember-cli Versions](https://img.shields.io/badge/ember--cli%20Versions-%5E2.13%20%7C%7C%20%5E3.0-brightgreen.svg)](https://travis-ci.org/buschtoens/ember-on-modifier)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![dependencies](https://img.shields.io/david/buschtoens/ember-on-modifier.svg)](https://david-dm.org/buschtoens/ember-on-modifier)
+[![devDependencies](https://img.shields.io/david/dev/buschtoens/ember-on-modifier.svg)](https://david-dm.org/buschtoens/ember-on-modifier)
 
+An implementation of the `{{on}}` element modifier shown in the [Modifiers RFC
+#353](https://github.com/emberjs/rfcs/pull/353). Heavily inspired by
+[`@ember/render-modifiers`](https://github.com/emberjs/ember-render-modifiers).
 
-Compatibility
-------------------------------------------------------------------------------
-
-* Ember.js v2.18 or above
-* Ember CLI v2.13 or above
-
-
-Installation
-------------------------------------------------------------------------------
+## Installation
 
 ```
 ember install ember-on-modifier
 ```
 
+#### Compatibility
 
-Usage
-------------------------------------------------------------------------------
+- Ember.js v2.18 or above
+- emebr-cli v2.13 or above
 
-[Longer description of how to use the addon in apps.]
+## Usage
 
+```hbs
+<button {{on 'click' this.onClick}}>
+  Click me baby, one more time!
+</button>
+```
 
-License
-------------------------------------------------------------------------------
+```ts
+import Component from '@ember/component';
+import { action } from '@ember-decorators/object';
 
-This project is licensed under the [MIT License](LICENSE.md).
+export default class BritneySpearsComponent extends Component {
+  @action
+  onClick(event: MouseEvent) {
+    console.log('I must confess, I still believe.');
+  }
+}
+```
+
+The [`@action` decorator][@action] is used to bind the `onClick` method to the
+component instance. Alternatively, you can use the [`{{action}}`][action-helper]
+or [`{{bind}}`][bind-helper] helper in the template.
+
+[@action]: https://ember-decorators.github.io/ember-decorators/docs/api/modules/@ember-decorators/object#action
+[action-helper]: https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/action?anchor=action
+[bind-helper]: https://github.com/Serabe/ember-bind-helper
+
+This is essentially equivalent to:
+
+```ts
+didInsertElement() {
+  super.didInsertElement();
+
+  const button = this.element.querySelector('button');
+  button.addEventListener('click', this.onClick);
+}
+```
+
+In addition to the above `{{on}}` will properly tear down the event listener,
+when the element is removed from the DOM. It will also re-register the event
+listener, if any of the passed parameters change.
+
+### Event Options
+
+All named parameters will be passed through to
+[`addEventListener`][addeventlistener] as the third parameter, the options hash.
+
+[addeventlistener]: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+
+```hbs
+<div {{on 'scroll' this.onScroll passive=true}}>
+  Lorem Ipsum ...
+</div>
+```
+
+This is essentially equivalent to:
+
+```ts
+didInsertElement() {
+  super.didInsertElement();
+
+  const div = this.element.querySelector('div');
+  div.addEventListener('scroll', this.onScroll, { passive: true });
+}
+```
+
+### Currying / Partial Application
+
+If you want to curry the function call / partially apply arguments, you can do
+so using the [`{{action}}`][action-helper] or [`{{bind}}`][bind-helper] helper:
+
+```hbs
+{{#each this.users as |user|}}
+  <button {{on 'click' (action this.deleteUser user)}}>
+    Delete {{user.name}}
+  </button>
+{{/each}}
+```
+
+```ts
+import Component from '@ember/component';
+import { action } from '@ember-decorators/object';
+
+interface User {
+  name: string;
+}
+
+export default class UserListComponent extends Component {
+  users: User[] = [{ name: 'Tom Dale' }, { name: 'Yehuda Katz' }];
+
+  @action
+  deleteUser(user: User, event: MouseEvent) {
+    event.preventDefault();
+    this.users.removeObject(user);
+  }
+}
+```
