@@ -19,11 +19,13 @@ export default Ember._setModifierManager(
         named: eventOptions
       }
     ) {
-      element.addEventListener(eventName, callback, eventOptions);
+      if (callback) {
+        element.addEventListener(eventName, callback, eventOptions);
+        state.callback = callback;
+      }
 
       state.element = element;
       state.eventName = eventName;
-      state.callback = callback;
       state.eventOptions = eventOptions;
     },
 
@@ -34,8 +36,12 @@ export default Ember._setModifierManager(
         named: eventOptions
       }
     ) {
-      state.element.removeEventListener(state.eventName, state.callback);
-      state.element.addEventListener(eventName, callback, eventOptions);
+      if (state.callback) {
+        state.element.removeEventListener(state.eventName, state.callback);
+      }
+      if (callback) {
+        state.element.addEventListener(eventName, callback, eventOptions);
+      }
 
       state.eventName = eventName;
       state.callback = callback;

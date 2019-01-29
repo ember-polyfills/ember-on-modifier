@@ -66,4 +66,40 @@ module('Integration | Modifier | on', function(hooks) {
     assert.strictEqual(a, 1);
     assert.strictEqual(b, 1);
   });
+
+  test('it does not error when a callback was not registered', async function(assert) {
+    assert.expect(0);
+
+    await render(hbs`<button data-foo="some-thing" {{on 'click'}}></button>`);
+
+    await click('button');
+  });
+
+  test('when callback is initially missing but subsequently set it works', async function(assert) {
+    assert.expect(3);
+
+    this.someMethod = event => {
+      assert.ok(
+        event instanceof MouseEvent,
+        'first argument is a `ClickEvent`'
+      );
+      assert.strictEqual(
+        event.target.tagName,
+        'BUTTON',
+        'correct element tagName'
+      );
+      assert.dom(event.target).hasAttribute('data-foo', 'some-thing');
+    };
+
+    this.shouldListen = false;
+    await render(
+      hbs`<button data-foo="some-thing" {{on 'click' (if this.shouldListen this.someMethod)}}></button>`
+    );
+
+    await click('button'); // does not trigger someMethod
+
+    this.set('shouldListen', true);
+
+    await click('button'); // does trigger someMethod
+  });
 });
