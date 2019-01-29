@@ -3,6 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render, click, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { set } from '@ember/object';
+import { run } from '@ember/runloop';
 
 module('Integration | Modifier | on', function(hooks) {
   setupRenderingTest(hooks);
@@ -57,7 +58,7 @@ module('Integration | Modifier | on', function(hooks) {
     await click('button');
 
     let b = 0;
-    set(this, 'someMethod', () => b++);
+    run(() => set(this, 'someMethod', () => b++));
     await settled();
 
     await click('button');
