@@ -66,4 +66,43 @@ module('Integration | Modifier | on', function(hooks) {
     assert.strictEqual(a, 1);
     assert.strictEqual(b, 1);
   });
+
+  test('it does nothing if the callback or event name is `null` or `undefined`', async function(assert) {
+    assert.expect(0);
+
+    this.someMethod = () => {};
+
+    await render(hbs`
+      <button data-foo="some-thing" {{on 'click' null}}></button>
+      <button data-foo="some-thing" {{on 'click' undefined}}></button>
+      <button data-foo="some-thing" {{on null this.someMethod}}></button>
+      <button data-foo="some-thing" {{on undefined this.someMethod}}></button>
+    `);
+  });
+
+  test('it does not crash when updating to or from `null` / `undefined`', async function(assert) {
+    assert.expect(3);
+
+    let n = 0;
+    this.someMethod = () => n++;
+
+    await render(
+      hbs`<button data-foo="some-thing" {{on 'click' this.someMethod}}></button>`
+    );
+
+    await click('button');
+    assert.strictEqual(n, 1);
+
+    run(() => set(this, 'someMethod', undefined));
+    await settled();
+
+    await click('button');
+    assert.strictEqual(n, 1);
+
+    run(() => set(this, 'someMethod', () => n++));
+    await settled();
+
+    await click('button');
+    assert.strictEqual(n, 2);
+  });
 });

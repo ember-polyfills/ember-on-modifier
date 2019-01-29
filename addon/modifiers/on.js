@@ -19,7 +19,8 @@ export default Ember._setModifierManager(
         named: eventOptions
       }
     ) {
-      element.addEventListener(eventName, callback, eventOptions);
+      if (typeof eventName === 'string' && typeof callback === 'function')
+        element.addEventListener(eventName, callback, eventOptions);
 
       state.element = element;
       state.eventName = eventName;
@@ -34,8 +35,14 @@ export default Ember._setModifierManager(
         named: eventOptions
       }
     ) {
-      state.element.removeEventListener(state.eventName, state.callback);
-      state.element.addEventListener(eventName, callback, eventOptions);
+      if (
+        typeof state.eventName === 'string' &&
+        typeof state.callback === 'function'
+      )
+        state.element.removeEventListener(state.eventName, state.callback);
+
+      if (typeof eventName === 'string' && typeof callback === 'function')
+        state.element.addEventListener(eventName, callback, eventOptions);
 
       state.eventName = eventName;
       state.callback = callback;
@@ -43,7 +50,8 @@ export default Ember._setModifierManager(
     },
 
     destroyModifier({ element, eventName, callback }) {
-      element.removeEventListener(eventName, callback);
+      if (typeof eventName === 'string' && typeof callback === 'function')
+        element.removeEventListener(eventName, callback);
     }
   }),
   class OnModifier {}
