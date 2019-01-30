@@ -28,7 +28,7 @@ ember install ember-on-modifier
 ## Usage
 
 ```hbs
-<button {{on 'click' this.onClick}}>
+<button {{on "click" this.onClick}}>
   Click me baby, one more time!
 </button>
 ```
@@ -75,9 +75,9 @@ the same event.
 
 ```hbs
 <button
-  {{on 'click' this.onClick}}
-  {{on 'click' this.anotherOnClick}}
-  {{on 'mouseover' this.onMouseEnter}}
+  {{on "click" this.onClick}}
+  {{on "click" this.anotherOnClick}}
+  {{on "mouseover" this.onMouseEnter}}
 >
   Click me baby, one more time!
 </button>
@@ -91,7 +91,7 @@ All named parameters will be passed through to
 [addeventlistener]: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 
 ```hbs
-<div {{on 'scroll' this.onScroll passive=true}}>
+<div {{on "scroll" this.onScroll passive=true}}>
   Lorem Ipsum ...
 </div>
 ```
@@ -114,7 +114,7 @@ so using the [`{{action}}`][action-helper] or [`{{bind}}`][bind-helper] helper:
 
 ```hbs
 {{#each this.users as |user|}}
-  <button {{on 'click' (action this.deleteUser user)}}>
+  <button {{on "click" (action this.deleteUser user)}}>
     Delete {{user.name}}
   </button>
 {{/each}}
