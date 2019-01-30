@@ -68,6 +68,21 @@ In addition to the above `{{on}}` will properly tear down the event listener,
 when the element is removed from the DOM. It will also re-register the event
 listener, if any of the passed parameters change.
 
+### Listening to Multiple Events
+
+You can use the `{{on}}` modifier multiple times on the same element, even for
+the same event.
+
+```hbs
+<button
+  {{on 'click' this.onClick}}
+  {{on 'click' this.anotherOnClick}}
+  {{on 'mouseover' this.onMouseEnter}}
+>
+  Click me baby, one more time!
+</button>
+```
+
 ### Event Options
 
 All named parameters will be passed through to
