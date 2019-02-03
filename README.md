@@ -23,7 +23,7 @@ ember install ember-on-modifier
 #### Compatibility
 
 - Ember.js v2.18 or above
-- emebr-cli v2.13 or above
+- ember-cli v2.13 or above
 
 ## Usage
 
