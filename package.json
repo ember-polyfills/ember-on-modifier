@@ -1,6 +1,6 @@
 {
   "name": "ember-on-modifier",
-  "version": "0.2.0",
+  "version": "0.6.0",
   "description": "{{on eventName this.someAction}} element modifier",
   "keywords": [
     "ember-addon",
