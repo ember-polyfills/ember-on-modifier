@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import addEventListener from '../utils/add-event-listener';
 
 export default Ember._setModifierManager(
   () => ({
@@ -20,7 +21,7 @@ export default Ember._setModifierManager(
       }
     ) {
       if (typeof eventName === 'string' && typeof callback === 'function')
-        element.addEventListener(eventName, callback, eventOptions);
+        addEventListener(element, eventName, callback, eventOptions);
 
       state.element = element;
       state.eventName = eventName;
@@ -42,7 +43,7 @@ export default Ember._setModifierManager(
         state.element.removeEventListener(state.eventName, state.callback);
 
       if (typeof eventName === 'string' && typeof callback === 'function')
-        state.element.addEventListener(eventName, callback, eventOptions);
+        addEventListener(state.element, eventName, callback, eventOptions);
 
       state.eventName = eventName;
       state.callback = callback;
