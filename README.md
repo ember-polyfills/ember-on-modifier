@@ -138,3 +138,26 @@ export default class UserListComponent extends Component {
   }
 }
 ```
+
+### `preventDefault`
+
+This addon ships a `prevent-default` template helper, that you can use like
+this:
+
+```hbs
+<a href="/" {{on "click" (prevent-default this.someAction)}}>Click me</a>
+```
+
+```hbs
+<a href="/" {{on "click" this.someAction}} {{on "click" (prevent-default)}}>Click me</a>
+```
+
+This is effectively the same as calling `event.preventDefault()` in your event
+handler or using the [`{{action}}` modifier][action-event-propagation]
+like this:
+
+```hbs
+<a href="/" {{action this.someAction preventDefault=true}}>Click me</a>
+```
+
+[action-event-propagation]: https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/action?anchor=action#event-propagation
