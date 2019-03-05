@@ -14,7 +14,6 @@ steps:
     inputs:
       versionSpec: "8.x"
     displayName: "Install Node.js"
-
   - script: |
       npm install -g yarn
     displayName: "Install yarn"
@@ -22,7 +21,6 @@ steps:
       yarn install --frozen-lockfile --non-interactive
     displayName: "Install dependencies via yarn"
   - script: |
-      yarn run testem launchers
       yarn run ember test
     displayName: "Ember Tests"
   - script: |
