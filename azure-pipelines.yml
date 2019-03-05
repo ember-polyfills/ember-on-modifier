@@ -21,7 +21,7 @@ steps:
       yarn install --frozen-lockfile --non-interactive
     displayName: "Install dependencies via yarn"
   - script: |
-      yarn run ember test
+      node ./ie
     displayName: "Ember Tests"
   - script: |
       cat ember-tests.xml
