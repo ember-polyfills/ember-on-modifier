@@ -21,7 +21,7 @@ steps:
       yarn install
     displayName: 'Build'
   - script: |
-      yarn ember test -r xunit
+      yarn ember test --reporter xunit --silent > ember-tests.xml
     displayName: 'Ember App Tests'
   - script: |
       cat ember-tests.xml
