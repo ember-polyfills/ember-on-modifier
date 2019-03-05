@@ -4,6 +4,9 @@ module.exports = {
   launch_in_ci: ['Chrome', process.env.IE && 'IE'].filter(Boolean),
   launch_in_dev: ['Chrome'],
   browser_args: {
+    IE: {
+      ci: ['-k', '-extoff']
+    },
     Chrome: {
       ci: [
         // --no-sandbox is needed when running Chrome inside a container
