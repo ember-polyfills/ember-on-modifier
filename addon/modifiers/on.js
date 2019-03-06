@@ -1,3 +1,5 @@
+/* eslint no-param-reassign: ["error", { "props": false }] */
+
 import Ember from 'ember';
 import addEventListener from '../utils/add-event-listener';
 

@@ -28,10 +28,26 @@ export const SUPPORTS_EVENT_OPTIONS = (() => {
     div.dispatchEvent(event);
 
     return counter === 1;
-  } catch (err) {
+  } catch (error) {
     return false;
   }
 })();
+
+/**
+ * Registers an event for an `element` that is called exactly once and then
+ * unregistered again. This is effectively a polyfill for `{ once: true }`.
+ *
+ * @param {Element} element
+ * @param {string} eventName
+ * @param {Function} callback
+ */
+export function addEventListenerOnce(element, eventName, callback) {
+  function listener() {
+    element.removeEventListener(eventName, listener);
+    callback();
+  }
+  element.addEventListener(eventName, listener);
+}
 
 /**
  * Safely invokes `addEventListener` for IE11 and also polyfills the
@@ -55,20 +71,4 @@ export default function addEventListener(
   } else {
     element.addEventListener(eventName, callback);
   }
-}
-
-/**
- * Registers an event for an `element` that is called exactly once and then
- * unregistered again. This is effectively a polyfill for `{ once: true }`.
- *
- * @param {Element} element
- * @param {string} eventName
- * @param {Function} callback
- */
-export function addEventListenerOnce(element, eventName, callback) {
-  function listener() {
-    element.removeEventListener(eventName, listener);
-    callback();
-  }
-  element.addEventListener(eventName, listener);
 }
