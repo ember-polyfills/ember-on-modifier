@@ -107,6 +107,40 @@ didInsertElement() {
 }
 ```
 
+#### `once`
+
+To fire an event listener only once, you can pass the [`once` option][addeventlistener-parameters]:
+
+```hbs
+<button
+  {{on "click" this.clickOnlyTheFirstTime once=true}}
+  {{on "click" this.clickEveryTime}}
+>
+  Click me baby, one more time!
+</button>
+```
+
+`clickOnlyTheFirstTime` will only be fired the first time the button is clicked.
+`clickEveryTime` is fired every time the button is clicked, including the first
+time.
+
+[addeventlistener-parameters]: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Parameters
+
+#### Internet Explorer 11 Support
+
+Internet Explorer 11 has a buggy and incomplete implementation of
+`addEventListener`: It does not accept an
+[`options`][addeventlistener-parameters] parameter and _sometimes_ even throws
+a cryptic error when passing options.
+
+This is why this addon ships a tiny [ponyfill][ponyfill] for `addEventLisener`
+that is used internally to emualte the `once` option and discard any other
+options. This means that any [`options`][addeventlistener-parameters] other than
+[`once`][addeventlistener-parameters] will have _no effect in IE11_, so do not
+rely on them in your logic, if you need to support IE11.
+
+[ponyfill]: https://github.com/sindresorhus/ponyfill
+
 ### Currying / Partial Application
 
 If you want to curry the function call / partially apply arguments, you can do
