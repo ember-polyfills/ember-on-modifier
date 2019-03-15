@@ -9,12 +9,16 @@ module('Integration | Modifier | on', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it basically works', async function(assert) {
-    assert.expect(3);
+    assert.expect(4);
 
-    this.someMethod = event => {
+    this.someMethod = function(event) {
+      assert.ok(
+        this instanceof HTMLButtonElement && this.dataset.foo === 'some-thing',
+        'this context is the element'
+      );
       assert.ok(
         event instanceof MouseEvent,
-        'first argument is a `ClickEvent`'
+        'first argument is a `MouseEvent`'
       );
       assert.strictEqual(
         event.target.tagName,
@@ -45,6 +49,38 @@ module('Integration | Modifier | on', function(hooks) {
     await click('button');
 
     assert.strictEqual(n, 1, 'callback has only been called once');
+  });
+
+  test('it passes additional parameters though to the listener', async function(assert) {
+    assert.expect(4);
+
+    const calls = [];
+
+    this.a = 1;
+    this.b = 3;
+    this.c = 5;
+    this.someMethod = (a, b, c, event) => {
+      calls.push([a, b, c]);
+      assert.ok(event instanceof MouseEvent, 'last parameter is an event');
+    };
+
+    await render(
+      hbs`<button {{on "click" this.someMethod this.a this.b this.c}}>{{this.c}}</button>`
+    );
+
+    await click('button');
+    await click('button');
+
+    set(this, 'c', 7);
+    await settled();
+
+    await click('button');
+
+    assert.deepEqual(
+      calls,
+      [[1, 3, 5], [1, 3, 5], [1, 3, 7]],
+      'parameters were passed through and updated on change'
+    );
   });
 
   test('it is re-registered, when the callback changes', async function(assert) {
