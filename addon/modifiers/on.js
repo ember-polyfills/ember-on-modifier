@@ -1,7 +1,27 @@
-/* eslint no-param-reassign: ["error", { "props": false }] */
+/* eslint no-param-reassign: "off" */
 
 import Ember from 'ember';
 import addEventListener from '../utils/add-event-listener';
+
+function setupListener(element, eventName, callback, eventOptions, params) {
+  if (typeof eventName === 'string' && typeof callback === 'function') {
+    if (Array.isArray(params) && params.length > 0) {
+      const _callback = callback;
+      callback = function(...args) {
+        return _callback.call(this, ...params, ...args);
+      };
+    }
+
+    addEventListener(element, eventName, callback, eventOptions);
+  }
+
+  return callback;
+}
+
+function destroyListener(element, eventName, callback) {
+  if (typeof eventName === 'string' && typeof callback === 'function')
+    element.removeEventListener(eventName, callback);
+}
 
 export default Ember._setModifierManager(
   () => ({
@@ -18,43 +38,47 @@ export default Ember._setModifierManager(
       state,
       element,
       {
-        positional: [eventName, callback],
+        positional: [eventName, callback, ...params],
         named: eventOptions
       }
     ) {
-      if (typeof eventName === 'string' && typeof callback === 'function')
-        addEventListener(element, eventName, callback, eventOptions);
+      state.callback = setupListener(
+        element,
+        eventName,
+        callback,
+        eventOptions,
+        params
+      );
 
       state.element = element;
       state.eventName = eventName;
-      state.callback = callback;
+      state.params = params;
       state.eventOptions = eventOptions;
     },
 
     updateModifier(
       state,
       {
-        positional: [eventName, callback],
+        positional: [eventName, callback, ...params],
         named: eventOptions
       }
     ) {
-      if (
-        typeof state.eventName === 'string' &&
-        typeof state.callback === 'function'
-      )
-        state.element.removeEventListener(state.eventName, state.callback);
-
-      if (typeof eventName === 'string' && typeof callback === 'function')
-        addEventListener(state.element, eventName, callback, eventOptions);
+      destroyListener(state.element, state.eventName, state.callback);
+      state.callback = setupListener(
+        state.element,
+        eventName,
+        callback,
+        eventOptions,
+        params
+      );
 
       state.eventName = eventName;
-      state.callback = callback;
+      state.params = params;
       state.eventOptions = eventOptions;
     },
 
     destroyModifier({ element, eventName, callback }) {
-      if (typeof eventName === 'string' && typeof callback === 'function')
-        element.removeEventListener(eventName, callback);
+      destroyListener(element, eventName, callback);
     }
   }),
   class OnModifier {}
