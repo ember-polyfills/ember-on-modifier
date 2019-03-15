@@ -25,7 +25,7 @@ module('Integration | Modifier | on', function(hooks) {
     };
 
     await render(
-      hbs`<button data-foo="some-thing" {{on 'click' this.someMethod}}></button>`
+      hbs`<button data-foo="some-thing" {{on "click" this.someMethod}}></button>`
     );
 
     await click('button');
@@ -38,7 +38,7 @@ module('Integration | Modifier | on', function(hooks) {
     this.someMethod = () => n++;
 
     await render(
-      hbs`<button {{on 'click' this.someMethod once=true}}></button>`
+      hbs`<button {{on "click" this.someMethod once=true}}></button>`
     );
 
     await click('button');
@@ -53,7 +53,7 @@ module('Integration | Modifier | on', function(hooks) {
     let a = 0;
     this.someMethod = () => a++;
 
-    await render(hbs`<button {{on 'click' this.someMethod}}></button>`);
+    await render(hbs`<button {{on "click" this.someMethod}}></button>`);
 
     await click('button');
 
@@ -73,8 +73,8 @@ module('Integration | Modifier | on', function(hooks) {
     this.someMethod = () => {};
 
     await render(hbs`
-      <button data-foo="some-thing" {{on 'click' null}}></button>
-      <button data-foo="some-thing" {{on 'click' undefined}}></button>
+      <button data-foo="some-thing" {{on "click" null}}></button>
+      <button data-foo="some-thing" {{on "click" undefined}}></button>
       <button data-foo="some-thing" {{on null this.someMethod}}></button>
       <button data-foo="some-thing" {{on undefined this.someMethod}}></button>
     `);
@@ -87,7 +87,7 @@ module('Integration | Modifier | on', function(hooks) {
     this.someMethod = () => n++;
 
     await render(
-      hbs`<button data-foo="some-thing" {{on 'click' this.someMethod}}></button>`
+      hbs`<button data-foo="some-thing" {{on "click" this.someMethod}}></button>`
     );
 
     await click('button');
