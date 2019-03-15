@@ -71,7 +71,7 @@ module('Integration | Modifier | on', function(hooks) {
     await click('button');
     await click('button');
 
-    set(this, 'c', 7);
+    run(() => set(this, 'c', 7));
     await settled();
 
     await click('button');
