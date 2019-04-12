@@ -2,6 +2,20 @@
 
 import Ember from 'ember';
 import addEventListener from '../utils/add-event-listener';
+import { assert } from '@ember/debug';
+
+const allowedEventOptions = ['captured', 'once', 'passive'];
+
+function assertValidEventOptions(eventOptions) {
+  return Object.keys(eventOptions).every(function(option) {
+    const isValid = !option || allowedEventOptions.includes(option);
+    assert(
+      '`capture`, `once` or `passive` are only allowed as event options',
+      isValid
+    );
+    return isValid;
+  });
+}
 
 function setupListener(element, eventName, callback, eventOptions, params) {
   if (typeof eventName === 'string' && typeof callback === 'function') {
@@ -42,6 +56,7 @@ export default Ember._setModifierManager(
         named: eventOptions
       }
     ) {
+      assertValidEventOptions(eventOptions);
       state.callback = setupListener(
         element,
         eventName,
@@ -64,6 +79,7 @@ export default Ember._setModifierManager(
       }
     ) {
       destroyListener(state.element, state.eventName, state.callback);
+      assertValidEventOptions(eventOptions);
       state.callback = setupListener(
         state.element,
         eventName,

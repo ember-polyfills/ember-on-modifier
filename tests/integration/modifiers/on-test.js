@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click, settled } from '@ember/test-helpers';
+import { render, click, settled, setupOnerror } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { set } from '@ember/object';
 import { run } from '@ember/runloop';
@@ -49,6 +49,19 @@ module('Integration | Modifier | on', function(hooks) {
     await click('button');
 
     assert.strictEqual(n, 1, 'callback has only been called once');
+  });
+
+  test('it raises an assertion if an invalid event option is passed in', async function(assert) {
+    assert.expect(1);
+    setupOnerror(function(error) {
+      const expected =
+        'Assertion Failed: `capture`, `once` or `passive` are only allowed as event options';
+      assert.equal(error.message, expected, 'error is thrown');
+    });
+
+    await render(
+      hbs`<button {{on "click" this.someMethod nope=true}}></button>`
+    );
   });
 
   test('it passes additional parameters though to the listener', async function(assert) {
