@@ -2,8 +2,34 @@
 
 import Ember from 'ember';
 import addEventListener from '../utils/add-event-listener';
+import { assert } from '@ember/debug';
+import { DEBUG } from '@glimmer/env';
+
+const assertValidEventOptions =
+  DEBUG &&
+  (() => {
+    const ALLOWED_EVENT_OPTIONS = ['captured', 'once', 'passive'];
+    const joinOptions = opts => opts.map(o => `'${o}'`).join(', ');
+
+    return function(eventOptions, eventName) {
+      const invalidOptions = Object.keys(eventOptions).filter(
+        o => !ALLOWED_EVENT_OPTIONS.includes(o)
+      );
+
+      assert(
+        `ember-on-modifier: Provided invalid event options (${joinOptions(
+          invalidOptions
+        )}) to '${eventName}' event listener. Only these options are valid: ${joinOptions(
+          ALLOWED_EVENT_OPTIONS
+        )}`,
+        invalidOptions.length === 0
+      );
+    };
+  })();
 
 function setupListener(element, eventName, callback, eventOptions, params) {
+  if (DEBUG) assertValidEventOptions(eventOptions, eventName);
+
   if (typeof eventName === 'string' && typeof callback === 'function') {
     if (Array.isArray(params) && params.length > 0) {
       const _callback = callback;

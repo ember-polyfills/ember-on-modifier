@@ -1,12 +1,20 @@
-import { module, test } from 'qunit';
+import { module, test, skip } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click, settled } from '@ember/test-helpers';
+import {
+  render,
+  click,
+  settled,
+  setupOnerror,
+  resetOnerror
+} from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { set } from '@ember/object';
 import { run } from '@ember/runloop';
+import { gte } from 'ember-compatibility-helpers';
 
 module('Integration | Modifier | on', function(hooks) {
   setupRenderingTest(hooks);
+  hooks.afterEach(() => resetOnerror());
 
   test('it basically works', async function(assert) {
     assert.expect(4);
@@ -49,6 +57,24 @@ module('Integration | Modifier | on', function(hooks) {
     await click('button');
 
     assert.strictEqual(n, 1, 'callback has only been called once');
+  });
+
+  (gte('3.0.0') // I have no clue how to catch the error in Ember 2.13
+    ? test
+    : skip)('it raises an assertion if an invalid event option is passed in', async function(assert) {
+    assert.expect(1);
+
+    setupOnerror(function(error) {
+      assert.strictEqual(
+        error.message,
+        "Assertion Failed: ember-on-modifier: Provided invalid event options ('nope', 'foo') to 'click' event listener. Only these options are valid: 'captured', 'once', 'passive'",
+        'error is thrown'
+      );
+    });
+
+    await render(
+      hbs`<button {{on "click" this.someMethod nope=true foo=false}}></button>`
+    );
   });
 
   test('it passes additional parameters though to the listener', async function(assert) {
