@@ -1,12 +1,19 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click, settled, setupOnerror } from '@ember/test-helpers';
+import {
+  render,
+  click,
+  settled,
+  setupOnerror,
+  resetOnerror
+} from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { set } from '@ember/object';
 import { run } from '@ember/runloop';
 
 module('Integration | Modifier | on', function(hooks) {
   setupRenderingTest(hooks);
+  hooks.afterEach(() => resetOnerror());
 
   test('it basically works', async function(assert) {
     assert.expect(4);
