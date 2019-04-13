@@ -43,7 +43,7 @@ module('Integration | Modifier | on', function(hooks) {
     await click('button');
   });
 
-  test('it can accept event options', async function(assert) {
+  test('it can accept the `once` option', async function(assert) {
     assert.expect(1);
 
     let n = 0;
@@ -57,6 +57,51 @@ module('Integration | Modifier | on', function(hooks) {
     await click('button');
 
     assert.strictEqual(n, 1, 'callback has only been called once');
+  });
+
+  test('it can accept the `capture` option', async function(assert) {
+    assert.expect(1);
+
+    const calls = [];
+    this.outerListener = () => calls.push('outer');
+    this.innerListener = () => calls.push('inner');
+
+    await render(hbs`
+      <div {{on "click" this.outerListener capture=true}}>
+        <button {{on "click" this.innerListener}}>inner</button>
+      </div>
+    `);
+
+    await click('button');
+
+    assert.deepEqual(
+      calls,
+      ['outer', 'inner'],
+      'outer capture listener was called first'
+    );
+  });
+
+  test('it can accept the `once` & `capture` option combined', async function(assert) {
+    assert.expect(1);
+
+    const calls = [];
+    this.outerListener = () => calls.push('outer');
+    this.innerListener = () => calls.push('inner');
+
+    await render(hbs`
+      <div {{on "click" this.outerListener once=true capture=true}}>
+        <button {{on "click" this.innerListener}}>inner</button>
+      </div>
+    `);
+
+    await click('button');
+    await click('button');
+
+    assert.deepEqual(
+      calls,
+      ['outer', 'inner', 'inner'],
+      'outer capture listener was called first and was then unregistered'
+    );
   });
 
   (gte('3.0.0') // I have no clue how to catch the error in Ember 2.13
@@ -127,6 +172,39 @@ module('Integration | Modifier | on', function(hooks) {
 
     assert.strictEqual(a, 1);
     assert.strictEqual(b, 1);
+  });
+
+  test('it is re-registered, when the callback changes and `capture` is used', async function(assert) {
+    assert.expect(3);
+
+    let a = 0;
+    this.someMethod = () => a++;
+    this.capture = true;
+
+    await render(
+      hbs`<button {{on "click" this.someMethod capture=this.capture}}></button>`
+    );
+
+    await click('button');
+
+    let b = 0;
+    run(() => set(this, 'someMethod', () => b++));
+    await settled();
+
+    await click('button');
+
+    let c = 0;
+    run(() => {
+      set(this, 'someMethod', () => c++);
+      set(this, 'capture', false);
+    });
+    await settled();
+
+    await click('button');
+
+    assert.strictEqual(a, 1);
+    assert.strictEqual(b, 1);
+    assert.strictEqual(c, 1);
   });
 
   test('it does nothing if the callback or event name is `null` or `undefined`', async function(assert) {
