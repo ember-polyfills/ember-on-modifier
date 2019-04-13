@@ -1,7 +1,7 @@
 /* eslint no-param-reassign: "off" */
 
 import Ember from 'ember';
-import addEventListener from '../utils/add-event-listener';
+import { addEventListener, removeEventListener } from '../utils/event-listener';
 import { assert } from '@ember/debug';
 import { DEBUG } from '@glimmer/env';
 
@@ -44,9 +44,9 @@ function setupListener(element, eventName, callback, eventOptions, params) {
   return callback;
 }
 
-function destroyListener(element, eventName, callback) {
+function destroyListener(element, eventName, callback, eventOptions) {
   if (typeof eventName === 'string' && typeof callback === 'function')
-    element.removeEventListener(eventName, callback);
+    removeEventListener(element, eventName, callback, eventOptions);
 }
 
 export default Ember._setModifierManager(
@@ -89,7 +89,12 @@ export default Ember._setModifierManager(
         named: eventOptions
       }
     ) {
-      destroyListener(state.element, state.eventName, state.callback);
+      destroyListener(
+        state.element,
+        state.eventName,
+        state.callback,
+        state.eventOptions
+      );
       state.callback = setupListener(
         state.element,
         eventName,
@@ -103,8 +108,8 @@ export default Ember._setModifierManager(
       state.eventOptions = eventOptions;
     },
 
-    destroyModifier({ element, eventName, callback }) {
-      destroyListener(element, eventName, callback);
+    destroyModifier({ element, eventName, callback, eventOptions }) {
+      destroyListener(element, eventName, callback, eventOptions);
     }
   }),
   class OnModifier {}
