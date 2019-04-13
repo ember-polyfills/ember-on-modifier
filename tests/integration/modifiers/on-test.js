@@ -54,13 +54,15 @@ module('Integration | Modifier | on', function(hooks) {
   test('it raises an assertion if an invalid event option is passed in', async function(assert) {
     assert.expect(1);
     setupOnerror(function(error) {
-      const expected =
-        'Assertion Failed: `capture`, `once` or `passive` are only allowed as event options';
-      assert.equal(error.message, expected, 'error is thrown');
+      assert.strictEqual(
+        error.message,
+        "Assertion Failed: ember-on-modifier: Provided invalid event options ('nope', 'foo') to 'click' event listener. Only these options are valid: 'captured', 'once', 'passive'",
+        'error is thrown'
+      );
     });
 
     await render(
-      hbs`<button {{on "click" this.someMethod nope=true}}></button>`
+      hbs`<button {{on "click" this.someMethod nope=true foo=false}}></button>`
     );
   });
 
