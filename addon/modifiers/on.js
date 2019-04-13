@@ -8,7 +8,7 @@ import { DEBUG } from '@glimmer/env';
 const assertValidEventOptions =
   DEBUG &&
   (() => {
-    const ALLOWED_EVENT_OPTIONS = ['captured', 'once', 'passive'];
+    const ALLOWED_EVENT_OPTIONS = ['capture', 'once', 'passive'];
     const joinOptions = opts => opts.map(o => `'${o}'`).join(', ');
 
     return function(eventOptions, eventName) {
