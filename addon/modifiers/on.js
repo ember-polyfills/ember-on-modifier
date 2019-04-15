@@ -3,6 +3,7 @@
 import Ember from 'ember';
 import { addEventListener, removeEventListener } from '../utils/event-listener';
 import { assert } from '@ember/debug';
+import { deprecate } from '@ember/application/deprecations';
 import { DEBUG } from '@glimmer/env';
 
 const assertValidEventOptions =
@@ -29,6 +30,16 @@ const assertValidEventOptions =
 
 function setupListener(element, eventName, callback, eventOptions, params) {
   if (DEBUG) assertValidEventOptions(eventOptions, eventName);
+  deprecate(
+    `ember-on-modifier: Passing additional arguments to be partially applied to the event listener is deprecated in order to comply with the RFC. Use the '{{fn}}' helper instead: https://www.npmjs.com/package/ember-fn-helper`,
+    !Array.isArray(params) || params.length === 0,
+    {
+      id: 'ember-on-modifier.partial-application',
+      until: '1.0.0',
+      url:
+        'https://github.com/emberjs/rfcs/blob/master/text/0471-on-modifier.md'
+    }
+  );
 
   if (typeof eventName === 'string' && typeof callback === 'function') {
     if (Array.isArray(params) && params.length > 0) {
