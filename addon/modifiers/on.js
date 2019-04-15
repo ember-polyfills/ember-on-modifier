@@ -30,6 +30,14 @@ const assertValidEventOptions =
 
 function setupListener(element, eventName, callback, eventOptions, params) {
   if (DEBUG) assertValidEventOptions(eventOptions, eventName);
+  assert(
+    `ember-on-modifier: '${eventName}' is not a valid event name. It has to be a string with a minimum length of 1 character.`,
+    typeof eventName === 'string' && eventName.length > 1
+  );
+  assert(
+    `ember-on-modifier: '${callback}' is not a valid callback. Provide a function.`,
+    typeof callback === 'function'
+  );
   deprecate(
     `ember-on-modifier: Passing additional arguments to be partially applied to the event listener is deprecated in order to comply with the RFC. Use the '{{fn}}' helper instead: https://www.npmjs.com/package/ember-fn-helper`,
     !Array.isArray(params) || params.length === 0,
@@ -41,22 +49,20 @@ function setupListener(element, eventName, callback, eventOptions, params) {
     }
   );
 
-  if (typeof eventName === 'string' && typeof callback === 'function') {
-    if (Array.isArray(params) && params.length > 0) {
-      const _callback = callback;
-      callback = function(...args) {
-        return _callback.call(this, ...params, ...args);
-      };
-    }
-
-    addEventListener(element, eventName, callback, eventOptions);
+  if (Array.isArray(params) && params.length > 0) {
+    const _callback = callback;
+    callback = function(...args) {
+      return _callback.call(this, ...params, ...args);
+    };
   }
+
+  addEventListener(element, eventName, callback, eventOptions);
 
   return callback;
 }
 
 function destroyListener(element, eventName, callback, eventOptions) {
-  if (typeof eventName === 'string' && typeof callback === 'function')
+  if (element && eventName && callback)
     removeEventListener(element, eventName, callback, eventOptions);
 }
 

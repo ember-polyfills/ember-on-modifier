@@ -122,6 +122,58 @@ module('Integration | Modifier | on', function(hooks) {
     );
   });
 
+  (gte('3.0.0') // I have no clue how to catch the error in Ember 2.13
+    ? test
+    : skip)('it raises an assertion if an invalid event name or callback is passed in', async function(assert) {
+    const errors = [];
+    setupOnerror(error => errors.push(error));
+
+    await render(hbs`<button {{on "click" 10}}></button>`);
+    await render(hbs`<button {{on "click"}}></button>`);
+    await render(hbs`<button {{on "" undefined}}></button>`);
+    await render(hbs`<button {{on 10 undefined}}></button>`);
+    await render(hbs`<button {{on}}></button>`);
+
+    assert.deepEqual(errors.map(e => e.message), [
+      "Assertion Failed: ember-on-modifier: '10' is not a valid callback. Provide a function.",
+      "Assertion Failed: ember-on-modifier: 'undefined' is not a valid callback. Provide a function.",
+      "Assertion Failed: ember-on-modifier: '' is not a valid event name. It has to be a string with a minimum length of 1 character.",
+      "Assertion Failed: ember-on-modifier: '10' is not a valid event name. It has to be a string with a minimum length of 1 character.",
+      "Assertion Failed: ember-on-modifier: 'undefined' is not a valid event name. It has to be a string with a minimum length of 1 character."
+    ]);
+  });
+
+  (gte('3.0.0') // I have no clue how to catch the error in Ember 2.13
+    ? test
+    : skip)('it recovers after updating to incorrect parameters', async function(assert) {
+    assert.expect(3);
+
+    const errors = [];
+    setupOnerror(error => errors.push(error));
+
+    let n = 0;
+    this.someMethod = () => n++;
+
+    await render(
+      hbs`<button data-foo="some-thing" {{on "click" this.someMethod}}></button>`
+    );
+
+    await click('button');
+    assert.strictEqual(n, 1);
+
+    run(() => set(this, 'someMethod', undefined));
+    await settled();
+
+    await click('button');
+    assert.strictEqual(n, 1);
+
+    run(() => set(this, 'someMethod', () => n++));
+    await settled();
+
+    await click('button');
+    assert.strictEqual(n, 2);
+  });
+
   test('it passes additional parameters though to the listener', async function(assert) {
     assert.expect(4);
 
@@ -205,44 +257,5 @@ module('Integration | Modifier | on', function(hooks) {
     assert.strictEqual(a, 1);
     assert.strictEqual(b, 1);
     assert.strictEqual(c, 1);
-  });
-
-  test('it does nothing if the callback or event name is `null` or `undefined`', async function(assert) {
-    assert.expect(0);
-
-    this.someMethod = () => {};
-
-    await render(hbs`
-      <button data-foo="some-thing" {{on "click" null}}></button>
-      <button data-foo="some-thing" {{on "click" undefined}}></button>
-      <button data-foo="some-thing" {{on null this.someMethod}}></button>
-      <button data-foo="some-thing" {{on undefined this.someMethod}}></button>
-    `);
-  });
-
-  test('it does not crash when updating to or from `null` / `undefined`', async function(assert) {
-    assert.expect(3);
-
-    let n = 0;
-    this.someMethod = () => n++;
-
-    await render(
-      hbs`<button data-foo="some-thing" {{on "click" this.someMethod}}></button>`
-    );
-
-    await click('button');
-    assert.strictEqual(n, 1);
-
-    run(() => set(this, 'someMethod', undefined));
-    await settled();
-
-    await click('button');
-    assert.strictEqual(n, 1);
-
-    run(() => set(this, 'someMethod', () => n++));
-    await settled();
-
-    await click('button');
-    assert.strictEqual(n, 2);
   });
 });
