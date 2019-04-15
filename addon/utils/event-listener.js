@@ -1,3 +1,8 @@
+/* eslint no-param-reassign: "off" */
+
+import { assert } from '@ember/debug';
+import { DEBUG } from '@glimmer/env';
+
 /**
  * Internet Explorer 11 does not support `once` and also does not support
  * passing `eventOptions`. In some situations it then throws a weird script
@@ -72,19 +77,31 @@ export function addEventListenerOnce(
  * @param {object} [eventOptions]
  */
 export function addEventListener(element, eventName, callback, eventOptions) {
+  const _callback =
+    DEBUG && eventOptions && eventOptions.passive
+      ? function(event) {
+          event.preventDefault = () => {
+            assert(
+              `ember-on-modifier: You marked this listener as 'passive', meaning that you must not call 'event.preventDefault()'.`
+            );
+          };
+          return callback.call(this, event);
+        }
+      : callback;
+
   if (SUPPORTS_EVENT_OPTIONS) {
-    element.addEventListener(eventName, callback, eventOptions);
+    element.addEventListener(eventName, _callback, eventOptions);
   } else if (eventOptions && eventOptions.once) {
     addEventListenerOnce(
       element,
       eventName,
-      callback,
+      _callback,
       Boolean(eventOptions.capture)
     );
   } else {
     element.addEventListener(
       eventName,
-      callback,
+      _callback,
       Boolean(eventOptions && eventOptions.capture)
     );
   }
