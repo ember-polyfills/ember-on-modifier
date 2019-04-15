@@ -1,6 +1,6 @@
 /* eslint no-param-reassign: "off" */
 
-import Ember from 'ember';
+import { setModifierManager } from '@ember/modifier';
 import { addEventListener, removeEventListener } from '../utils/event-listener';
 import { assert } from '@ember/debug';
 import { deprecate } from '@ember/application/deprecations';
@@ -66,7 +66,7 @@ function destroyListener(element, eventName, callback, eventOptions) {
     removeEventListener(element, eventName, callback, eventOptions);
 }
 
-export default Ember._setModifierManager(
+export default setModifierManager(
   () => ({
     createModifier() {
       return {
