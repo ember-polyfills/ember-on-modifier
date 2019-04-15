@@ -10,9 +10,8 @@
 [![dependencies](https://img.shields.io/david/buschtoens/ember-on-modifier.svg)](https://david-dm.org/buschtoens/ember-on-modifier)
 [![devDependencies](https://img.shields.io/david/dev/buschtoens/ember-on-modifier.svg)](https://david-dm.org/buschtoens/ember-on-modifier)
 
-An implementation of the `{{on}}` element modifier shown in the [Modifiers RFC
-#353](https://github.com/emberjs/rfcs/pull/353). Heavily inspired by
-[`@ember/render-modifiers`](https://github.com/emberjs/ember-render-modifiers).
+A polyfill for the `{{on}}` element modifier specified by
+[RFC #471 "`{{on}}` modifier"](https://github.com/emberjs/rfcs/blob/master/text/0471-on-modifier.md).
 
 ## Installation
 
@@ -46,12 +45,9 @@ export default class BritneySpearsComponent extends Component {
 ```
 
 The [`@action` decorator][@action] is used to bind the `onClick` method to the
-component instance. Alternatively, you can use the [`{{action}}`][action-helper]
-or [`{{bind}}`][bind-helper] helper in the template.
+component instance.
 
-[@action]: https://ember-decorators.github.io/ember-decorators/docs/api/modules/@ember-decorators/object#action
-[action-helper]: https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/action?anchor=action
-[bind-helper]: https://github.com/Serabe/ember-bind-helper
+[@action]: https://github.com/emberjs/rfcs/blob/master/text/0408-decorators.md#method-binding
 
 This is essentially equivalent to:
 
@@ -144,11 +140,13 @@ rely on them in your logic, if you need to support IE11.
 ### Currying / Partial Application
 
 If you want to curry the function call / partially apply arguments, you can do
-so using the [`{{action}}`][action-helper] or [`{{bind}}`][bind-helper] helper:
+so using the [`{{fn}}` helper][fn-helper]:
+
+[fn-helper]: https://github.com/emberjs/rfcs/blob/master/text/0470-fn-helper.md
 
 ```hbs
 {{#each this.users as |user|}}
-  <button {{on "click" (action this.deleteUser user)}}>
+  <button {{on "click" (fn this.deleteUser user)}}>
     Delete {{user.name}}
   </button>
 {{/each}}
