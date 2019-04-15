@@ -122,6 +122,32 @@ time.
 
 [addeventlistener-parameters]: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Parameters
 
+#### `capture`
+
+To listen for an event during the capture phase already, use the [`capture` option][addeventlistener-parameters]:
+
+```hbs
+<div {{on "click" this.triggeredFirst capture=true}}>
+  <button {{on "click" this.triggeredLast}}>
+    Click me baby, one more time!
+  </button>
+</div>
+```
+
+#### `passive`
+
+If `true`, you promise to not call `event.preventDefault()`. This allows the
+browser to optimize the processing of this event and not block the UI thread.
+This prevent scroll jank.
+
+If you still call `event.preventDefault()`, an assertion will be raised.
+
+```hbs
+<div {{on "scroll" this.trackScrollPosition passive=true}}>
+  Lorem ipsum...
+</div>
+```
+
 #### Internet Explorer 11 Support
 
 Internet Explorer 11 has a buggy and incomplete implementation of
@@ -130,10 +156,9 @@ Internet Explorer 11 has a buggy and incomplete implementation of
 a cryptic error when passing options.
 
 This is why this addon ships a tiny [ponyfill][ponyfill] for `addEventLisener`
-that is used internally to emualte the `once` option and discard any other
-options. This means that any [`options`][addeventlistener-parameters] other than
-[`once`][addeventlistener-parameters] will have _no effect in IE11_, so do not
-rely on them in your logic, if you need to support IE11.
+that is used internally to emulate the `once`, `capture` and `passive` option.
+This means that all currently known [`options`][addeventlistener-parameters] are
+polyfilled, so that you can rely on them in your logic.
 
 [ponyfill]: https://github.com/sindresorhus/ponyfill
 
