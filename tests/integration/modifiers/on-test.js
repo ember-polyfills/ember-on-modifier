@@ -104,6 +104,23 @@ module('Integration | Modifier | on', function(hooks) {
     );
   });
 
+  test('it raises an assertion when calling `event.preventDefault()` on a `passive` event', async function(assert) {
+    assert.expect(1);
+
+    this.handler = event => {
+      assert.expectAssertion(
+        () => event.preventDefault(),
+        `ember-on-modifier: You marked this listener as 'passive', meaning that you must not call 'event.preventDefault()'.`
+      );
+    };
+
+    await render(
+      hbs`<button {{on "click" this.handler passive=true}}></button>`
+    );
+
+    await click('button');
+  });
+
   (gte('3.0.0') // I have no clue how to catch the error in Ember 2.13
     ? test
     : skip)('it raises an assertion if an invalid event option is passed in', async function(assert) {
