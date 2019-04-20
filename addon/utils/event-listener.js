@@ -19,7 +19,7 @@ export const SUPPORTS_EVENT_OPTIONS = (() => {
   try {
     const div = document.createElement('div');
     let counter = 0;
-    div.addEventListener('click', () => counter++);
+    div.addEventListener('click', () => counter++, { once: true });
 
     let event;
     if (typeof Event === 'function') {
