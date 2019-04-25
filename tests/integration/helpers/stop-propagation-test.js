@@ -41,6 +41,24 @@ module('Integration | Helper | stop-propagation', function(hooks) {
     await click('button');
   });
 
+  test('{{on "click" (stop-propagation) capture=true}}', async function(assert) {
+    assert.expect(1);
+
+    const calls = [];
+    this.outerListener = () => calls.push('outer');
+    this.innerListener = () => calls.push('inner');
+
+    await render(hbs`
+      <div {{on "click" (stop-propagation this.outerListener) capture=true}}>
+        <button {{on "click" this.innerListener}}>inner</button>
+      </div>
+    `);
+
+    await click('button');
+
+    assert.deepEqual(calls, ['outer'], 'it only runs the outer listener');
+  });
+
   test('{{on "click" this.onClick}} {{on "click" (stop-propagation)}}', async function(assert) {
     assert.expect(1);
 
