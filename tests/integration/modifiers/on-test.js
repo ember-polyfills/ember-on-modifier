@@ -87,7 +87,7 @@ module('Integration | Modifier | on', function(hooks) {
 
     assert.strictEqual(n, 1, 'callback has only been called once');
 
-    set(this, 'someProp', 1);
+    run(() => set(this, 'someProp', 1));
     await settled();
     assert.counts({ adds: 1, removes: 0 });
 
@@ -106,7 +106,7 @@ module('Integration | Modifier | on', function(hooks) {
     );
     assert.counts({ adds: 1, removes: 0 });
 
-    set(this, 'someProp', 1);
+    run(() => set(this, 'someProp', 1));
     await settled();
     assert.counts({ adds: 1, removes: 0 });
   });
