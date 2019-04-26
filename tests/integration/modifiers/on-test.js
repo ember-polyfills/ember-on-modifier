@@ -67,6 +67,34 @@ module('Integration | Modifier | on', function(hooks) {
     assert.strictEqual(n, 1, 'callback has only been called once');
   });
 
+  test('unrelated property changes do not break the `once` option', async function(assert) {
+    assert.expect(5);
+
+    let n = 0;
+    this.someMethod = () => n++;
+    this.someProp = 0;
+
+    await render(
+      hbs`<button {{on "click" this.someMethod once=true}}>{{this.someProp}}</button>`
+    );
+
+    assert.counts({ adds: 1, removes: 0 });
+
+    await click('button');
+    await click('button');
+
+    assert.counts({ adds: 1, removes: 0 });
+
+    assert.strictEqual(n, 1, 'callback has only been called once');
+
+    set(this, 'someProp', 1);
+    await settled();
+    assert.counts({ adds: 1, removes: 0 });
+
+    await click('button');
+    assert.strictEqual(n, 1, 'callback has only been called once');
+  });
+
   test('it can accept the `capture` option', async function(assert) {
     assert.expect(5);
 
