@@ -95,6 +95,22 @@ module('Integration | Modifier | on', function(hooks) {
     assert.strictEqual(n, 1, 'callback has only been called once');
   });
 
+  test('unrelated property changes do not cause the listener to re-register', async function(assert) {
+    assert.expect(2);
+
+    this.someMethod = () => {};
+    this.someProp = 0;
+
+    await render(
+      hbs`<button {{on "click" this.someMethod}}>{{this.someProp}}</button>`
+    );
+    assert.counts({ adds: 1, removes: 0 });
+
+    set(this, 'someProp', 1);
+    await settled();
+    assert.counts({ adds: 1, removes: 0 });
+  });
+
   test('it can accept the `capture` option', async function(assert) {
     assert.expect(5);
 
