@@ -6,6 +6,15 @@ import { assert } from '@ember/debug';
 import { deprecate } from '@ember/application/deprecations';
 import { DEBUG } from '@glimmer/env';
 
+/**
+ * These are private API and only used for testing instrumentation.
+ */
+let adds = 0;
+let removes = 0;
+export function __counts() {
+  return { adds, removes };
+}
+
 const assertValidEventOptions =
   DEBUG &&
   (() => {
@@ -56,14 +65,17 @@ function setupListener(element, eventName, callback, eventOptions, params) {
     };
   }
 
+  adds++;
   addEventListener(element, eventName, callback, eventOptions);
 
   return callback;
 }
 
 function destroyListener(element, eventName, callback, eventOptions) {
-  if (element && eventName && callback)
+  if (element && eventName && callback) {
+    removes++;
     removeEventListener(element, eventName, callback, eventOptions);
+  }
 }
 
 export default setModifierManager(
