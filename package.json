@@ -56,7 +56,7 @@
     "ember-try": "^1.0.0",
     "eslint": "^5.16.0",
     "loader.js": "^4.7.0",
-    "qunit-dom": "^0.8.4"
+    "qunit-dom": "^0.8.5"
   },
   "engines": {
     "node": "8.* || >= 10.*"
