@@ -5,7 +5,6 @@ import { start } from 'ember-qunit';
 import QUnit from 'qunit';
 import { __counts } from 'ember-on-modifier/modifiers/on';
 
-let startingCounts;
 QUnit.testStart(() => {
   QUnit.config.current.testEnvironment._startingCounts = __counts();
 });
@@ -19,8 +18,12 @@ QUnit.assert.counts = function(
   this.deepEqual(
     current,
     {
-      adds: expected.adds + this._startingCounts.adds,
-      removes: expected.removes + this._startingCounts.removes
+      adds:
+        expected.adds +
+        QUnit.config.current.testEnvironment._startingCounts.adds,
+      removes:
+        expected.removes +
+        QUnit.config.current.testEnvironment._startingCounts.removes
     },
     msg
   );
