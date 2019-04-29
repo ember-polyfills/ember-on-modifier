@@ -1,7 +1,17 @@
 import { helper } from '@ember/component/helper';
 import { assert } from '@ember/debug';
+import { deprecate } from '@ember/application/deprecations';
 
 export function preventDefault([handler]) {
+  deprecate(
+    '`(prevent-default)` has been moved to `ember-event-helpers`.',
+    false,
+    {
+      id: 'ember-on-modifier.prevent-default',
+      until: '1.0.0',
+      url: 'https://github.com/buschtoens/ember-event-helpers'
+    }
+  );
   assert(
     `Expected '${handler}' to be a function, if present.`,
     !handler || typeof handler === 'function'
