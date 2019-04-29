@@ -196,25 +196,31 @@ export default class UserListComponent extends Component {
 }
 ```
 
-### `preventDefault`
+### `preventDefault` / `stopPropagation` / `stopImmediatePropagation`
 
-This addon ships a `prevent-default` template helper, that you can use like
-this:
-
-```hbs
-<a href="/" {{on "click" (prevent-default this.someAction)}}>Click me</a>
-```
-
-```hbs
-<a href="/" {{on "click" this.someAction}} {{on "click" (prevent-default)}}>Click me</a>
-```
-
-This is effectively the same as calling `event.preventDefault()` in your event
-handler or using the [`{{action}}` modifier][action-event-propagation]
-like this:
+The old [`{{action}}` modifier][action-event-propagation] used to allow easily
+calling `event.preventDefault()` like so:
 
 ```hbs
 <a href="/" {{action this.someAction preventDefault=true}}>Click me</a>
 ```
 
 [action-event-propagation]: https://www.emberjs.com/api/ember/release/classes/Ember.Templates.helpers/methods/action?anchor=action#event-propagation
+
+You also could easily call `event.stopPropagation()` to avoid bubbling like so:
+
+```hbs
+<a href="/" {{action this.someAction bubbles=false}}>Click me</a>
+```
+
+You can still do this using [`ember-event-helpers`][ember-event-helpers]:
+
+[ember-event-helpers]: https://github.com/buschtoens/ember-event-helpers
+
+```hbs
+<a href="/" {{on "click" (prevent-default this.someAction)}}>Click me</a>
+```
+
+```hbs
+<a href="/" {{on "click" (stop-propagation this.someAction)}}>Click me</a>
+```
