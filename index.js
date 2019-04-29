@@ -23,7 +23,7 @@ module.exports = {
 
   filterTree(tree) {
     if (this.hasEventHelpers) {
-      tree = new Funnel(tree, { exclude: [/helpers/] });
+      return new Funnel(tree, { exclude: [/helpers/] });
     }
 
     return tree;
