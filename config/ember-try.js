@@ -93,6 +93,17 @@ module.exports = function() {
               '@ember/jquery': '^0.5.1'
             }
           }
+        },
+        {
+          name: 'ember-default-with-ember-event-helpers',
+          env: {
+            EMBER_EVENT_HELPERS_INSTALLED: true
+          },
+          npm: {
+            devDependencies: {
+              'ember-event-helpers': '^0.1.0'
+            }
+          }
         }
       ]
     };
