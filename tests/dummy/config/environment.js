@@ -20,7 +20,11 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    }
+    },
+
+    EMBER_EVENT_HELPERS_INSTALLED: Boolean(
+      process.env.EMBER_EVENT_HELPERS_INSTALLED
+    )
   };
 
   if (environment === 'development') {

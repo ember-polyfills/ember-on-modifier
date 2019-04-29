@@ -1,7 +1,12 @@
-import { module, test } from 'qunit';
+import { module } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import require from 'require';
+import {
+  testIfEventHelpersInstalled,
+  skipIfEventHelpersInstalled
+} from '../../helpers/ember-event-helpers';
 
 module('Integration | Helper | prevent-default', function(hooks) {
   setupRenderingTest(hooks);
@@ -16,42 +21,64 @@ module('Integration | Helper | prevent-default', function(hooks) {
     };
   });
 
+  testIfEventHelpersInstalled(
+    'prevent-default is stripped from the build',
+    function(assert) {
+      assert.notOk(
+        require.has('ember-on-modifier/helpers/prevent-default'),
+        'ember-on-modifier `prevent-default` is stripped'
+      );
+      assert.ok(
+        this.owner.lookup('helper:prevent-default').isHelperFactory,
+        '`prevent-default` from ember-event-helpers is present'
+      );
+    }
+  );
+
   // The rest of this test suite relies on this.
-  test('a submit button works in tests and submits the form', async function(assert) {
-    assert.expect(1);
+  skipIfEventHelpersInstalled(
+    'a submit button works in tests and submits the form',
+    async function(assert) {
+      assert.expect(1);
 
-    this.onSubmit = event => {
-      event.preventDefault();
-      assert.ok(true);
-    };
+      this.onSubmit = event => {
+        event.preventDefault();
+        assert.ok(true);
+      };
 
-    await render(hbs`
+      await render(hbs`
       <form {{on "submit" this.onSubmit}}>
         <button type="submit">Click me</button>
       </form>
     `);
 
-    await click('button');
-  });
+      await click('button');
+    }
+  );
 
-  test('{{on "click" (prevent-default)}}', async function(assert) {
-    assert.expect(0);
+  skipIfEventHelpersInstalled(
+    '{{on "click" (prevent-default)}}',
+    async function(assert) {
+      assert.expect(0);
 
-    await render(hbs`
+      await render(hbs`
       <form {{on "submit" this.onSubmit}}>
         <button type="submit" {{on "click" (prevent-default)}}>Click me</button>
       </form>
     `);
 
-    await click('button');
-  });
+      await click('button');
+    }
+  );
 
-  test('{{on "click" this.onClick}} {{on "click" (prevent-default)}}', async function(assert) {
-    assert.expect(1);
+  skipIfEventHelpersInstalled(
+    '{{on "click" this.onClick}} {{on "click" (prevent-default)}}',
+    async function(assert) {
+      assert.expect(1);
 
-    this.onClick = event => assert.ok(event instanceof Event);
+      this.onClick = event => assert.ok(event instanceof Event);
 
-    await render(hbs`
+      await render(hbs`
       <form {{on "submit" this.onSubmit}}>
         <button
           type="submit"
@@ -63,15 +90,18 @@ module('Integration | Helper | prevent-default', function(hooks) {
       </form>
     `);
 
-    await click('button');
-  });
+      await click('button');
+    }
+  );
 
-  test('{{on "click" (prevent-default)}} {{on "click" this.onClick}}', async function(assert) {
-    assert.expect(1);
+  skipIfEventHelpersInstalled(
+    '{{on "click" (prevent-default)}} {{on "click" this.onClick}}',
+    async function(assert) {
+      assert.expect(1);
 
-    this.onClick = event => assert.ok(event instanceof Event);
+      this.onClick = event => assert.ok(event instanceof Event);
 
-    await render(hbs`
+      await render(hbs`
       <form {{on "submit" this.onSubmit}}>
         <button
           type="submit"
@@ -83,15 +113,18 @@ module('Integration | Helper | prevent-default', function(hooks) {
       </form>
     `);
 
-    await click('button');
-  });
+      await click('button');
+    }
+  );
 
-  test('{{on "click" (prevent-default this.onClick)}}', async function(assert) {
-    assert.expect(1);
+  skipIfEventHelpersInstalled(
+    '{{on "click" (prevent-default this.onClick)}}',
+    async function(assert) {
+      assert.expect(1);
 
-    this.onClick = event => assert.ok(event instanceof Event);
+      this.onClick = event => assert.ok(event instanceof Event);
 
-    await render(hbs`
+      await render(hbs`
       <form {{on "submit" this.onSubmit}}>
         <button
           type="submit"
@@ -102,6 +135,7 @@ module('Integration | Helper | prevent-default', function(hooks) {
       </form>
     `);
 
-    await click('button');
-  });
+      await click('button');
+    }
+  );
 });
