@@ -18,14 +18,16 @@ module.exports = {
       this.project.findAddonByName('ember-event-helpers')
     );
 
-    if (
-      this.hasNativeOnModifier &&
-      this.hasEventHelpers &&
-      this.parent === this.project
-    ) {
-      this.ui.writeDeprecateLine(
-        'ember-on-modifier is no longer needed in your project. It can be removed from package.json.'
-      );
+    if (this.hasNativeOnModifier && this.parent === this.project) {
+      let message =
+        'The `{{on}}` modifier is available natively since Ember 3.11.0-beta.1. You can remove `ember-on-modifier` from your `package.json`.';
+
+      if (!this.hasEventHelpers) {
+        message +=
+          ' If you use the `(prevent-default)` helper, please install `ember-event-helpers`.';
+      }
+
+      this.ui.writeDeprecateLine(message);
     }
   },
 
