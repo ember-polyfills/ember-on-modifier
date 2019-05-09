@@ -42,7 +42,7 @@ module.exports = {
   filterTree(tree) {
     const exclude = [];
 
-    if (this.hasOnModifier) {
+    if (this.hasNativeOnModifier) {
       exclude.push(/modifiers/);
     }
     if (this.hasEventHelpers) {
