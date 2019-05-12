@@ -224,3 +224,22 @@ You can still do this using [`ember-event-helpers`][ember-event-helpers]:
 ```hbs
 <a href="/" {{on "click" (stop-propagation this.someAction)}}>Click me</a>
 ```
+
+## Related Projects
+
+- **[`ember-on-helper`][ember-on-helper]:** A complimentary `{{on}` template
+  helper that accepts arbitrary event targets.
+
+  ```hbs
+  {{on eventTarget eventName eventListener}}
+  ```
+
+  Also ships with two convenience helpers for adding event listeners to
+  `document` and `window`:
+
+  ```hbs
+  {{on-document eventName eventListener}}
+  {{on-window eventName eventListener}}
+  ```
+
+[ember-on-helper]: https://github.com/buschtoens/ember-on-helper
