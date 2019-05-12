@@ -11,7 +11,7 @@ QUnit.testStart(() => {
 
 QUnit.assert.counts = function(
   expected,
-  msg = `counters have incremented by ${JSON.stringify(expected)}`
+  message = `counters have incremented by ${JSON.stringify(expected)}`
 ) {
   const current = __counts();
 
@@ -25,7 +25,7 @@ QUnit.assert.counts = function(
         expected.removes +
         QUnit.config.current.testEnvironment._startingCounts.removes
     },
-    msg
+    message
   );
 };
 

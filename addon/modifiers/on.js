@@ -19,7 +19,7 @@ const assertValidEventOptions =
   DEBUG &&
   (() => {
     const ALLOWED_EVENT_OPTIONS = ['capture', 'once', 'passive'];
-    const joinOptions = opts => opts.map(o => `'${o}'`).join(', ');
+    const joinOptions = options => options.map(o => `'${o}'`).join(', ');
 
     return function(eventOptions, eventName) {
       const invalidOptions = Object.keys(eventOptions).filter(

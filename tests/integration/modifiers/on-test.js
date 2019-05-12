@@ -80,10 +80,10 @@ module('Integration | Modifier | on', function(hooks) {
 
       let n = 0;
       this.someMethod = () => n++;
-      this.someProp = 0;
+      this.someProperty = 0;
 
       await render(
-        hbs`<button {{on "click" this.someMethod once=true}}>{{this.someProp}}</button>`
+        hbs`<button {{on "click" this.someMethod once=true}}>{{this.someProperty}}</button>`
       );
 
       assert.counts({ adds: 1, removes: 0 });
@@ -95,7 +95,7 @@ module('Integration | Modifier | on', function(hooks) {
 
       assert.strictEqual(n, 1, 'callback has only been called once');
 
-      run(() => set(this, 'someProp', 1));
+      run(() => set(this, 'someProperty', 1));
       await settled();
       assert.counts({ adds: 1, removes: 0 });
 
@@ -110,14 +110,14 @@ module('Integration | Modifier | on', function(hooks) {
       assert.expect(2);
 
       this.someMethod = () => {};
-      this.someProp = 0;
+      this.someProperty = 0;
 
       await render(
-        hbs`<button {{on "click" this.someMethod}}>{{this.someProp}}</button>`
+        hbs`<button {{on "click" this.someMethod}}>{{this.someProperty}}</button>`
       );
       assert.counts({ adds: 1, removes: 0 });
 
-      run(() => set(this, 'someProp', 1));
+      run(() => set(this, 'someProperty', 1));
       await settled();
       assert.counts({ adds: 1, removes: 0 });
     }
