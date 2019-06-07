@@ -48,7 +48,7 @@ function setupListener(element, eventName, callback, eventOptions, params) {
     typeof callback === 'function'
   );
   deprecate(
-    `ember-on-modifier: Passing additional arguments to be partially applied to the event listener is deprecated in order to comply with the RFC. Use the '{{fn}}' helper instead: https://www.npmjs.com/package/ember-fn-helper`,
+    `ember-on-modifier: Passing additional arguments to be partially applied to the event listener is deprecated in order to comply with the RFC. Use the '{{fn}}' helper instead: https://www.npmjs.com/package/ember-fn-helper-polyfill`,
     !Array.isArray(params) || params.length === 0,
     {
       id: 'ember-on-modifier.partial-application',
