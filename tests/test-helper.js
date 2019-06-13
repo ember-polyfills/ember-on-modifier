@@ -3,16 +3,30 @@ import config from '../config/environment';
 import { setApplication } from '@ember/test-helpers';
 import { start } from 'ember-qunit';
 import QUnit from 'qunit';
-import { __counts } from 'ember-on-modifier/modifiers/on';
+import require, { has } from 'require';
+// import { __counts } from 'ember-on-modifier/modifiers/on';
+
+let __counts = null;
+
+if (has('ember-on-modifier/modifiers/on')) {
+  __counts = require('ember-on-modifier/modifiers/on').__counts;
+}
 
 QUnit.testStart(() => {
-  QUnit.config.current.testEnvironment._startingCounts = __counts();
+  if (__counts !== null) {
+    QUnit.config.current.testEnvironment._startingCounts = __counts();
+  }
 });
 
 QUnit.assert.counts = function(
   expected,
   message = `counters have incremented by ${JSON.stringify(expected)}`
 ) {
+  if (__counts === null) {
+    this.ok(true, 'using upstream implementation, not asserting on counts');
+    return;
+  }
+
   const current = __counts();
 
   this.deepEqual(
