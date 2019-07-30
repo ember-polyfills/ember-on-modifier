@@ -761,16 +761,24 @@
     eslint-plugin-ember-best-practices "^1.1.2"
     lodash.merge "^4.6.2"
 
-"@clark/eslint-config-node@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@clark/eslint-config-node/-/eslint-config-node-1.4.1.tgz#41561721ba75c8880264eda60b5cdba32e2c2ed8"
-  integrity sha512-kpSrc7WxsNdwjkwaor+gjO/lKLIIvXFhuryzYT1N2e5Zlu/q3O5LMBpkMUeT03iZXZL7zo23Eo5uHCHAJeHfXA==
+"@clark/eslint-config-node-order-imports@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@clark/eslint-config-node-order-imports/-/eslint-config-node-order-imports-1.6.0.tgz#8e7c36f79d284a75f78b63f92bcd0c8be9b28fb3"
+  integrity sha512-n0/nDQGomAA98hfmE8xisDx9nGegi3TuvQDgfs0mYEf3XNzclKPV0cBB1JqaB6OdZXfb0MjGOrqbD62atlCPxA==
   dependencies:
-    "@clark/eslint-config" "^1.4.1"
-    eslint-plugin-node "^9.1.0"
-    lodash.merge "^4.6.1"
+    eslint-plugin-import-helpers "^1.0.2"
 
-"@clark/eslint-config@^1.4.1", "@clark/eslint-config@^1.5.0":
+"@clark/eslint-config-node@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@clark/eslint-config-node/-/eslint-config-node-1.6.0.tgz#666ffa0ab7595e04a36de6988fc94062538b1c4f"
+  integrity sha512-9BOr07u4YOknMvN6VLVIdkQwl42YC1TImZLh53v14K5bnYUnrZKwWow75xRQudkrqUKjE5AiP0hopVfYS+2J3w==
+  dependencies:
+    "@clark/eslint-config" "^1.5.0"
+    "@clark/eslint-config-node-order-imports" "^1.6.0"
+    eslint-plugin-node "^9.1.0"
+    lodash.merge "^4.6.2"
+
+"@clark/eslint-config@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@clark/eslint-config/-/eslint-config-1.5.0.tgz#bb04ba43e6fc8d152020cf3e89792e5c0e176e3a"
   integrity sha512-/SvFFjuun4K5xH9ejZf7tzu2vIrew8iMP3OWWsXuac3c+lYnFzePNuHRsHxRasE7qsPPRoPWP2ijKD8s2dvFxA==
@@ -5682,7 +5690,7 @@ lodash.keys@~2.3.0:
     lodash._shimkeys "~2.3.0"
     lodash.isobject "~2.3.0"
 
-lodash.merge@^4.3.1, lodash.merge@^4.6.0, lodash.merge@^4.6.1, lodash.merge@^4.6.2:
+lodash.merge@^4.3.1, lodash.merge@^4.6.0, lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
