@@ -1,5 +1,7 @@
 import { module } from 'qunit';
+
 import require from 'require';
+
 import { skipIfEventHelpersInstalled } from '../../helpers/ember-event-helpers';
 
 module('Unit | Helper | prevent-default', function(hooks) {

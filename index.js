@@ -1,7 +1,7 @@
 'use strict';
 
-const VersionChecker = require('ember-cli-version-checker');
 const Funnel = require('broccoli-funnel');
+const VersionChecker = require('ember-cli-version-checker');
 
 module.exports = {
   name: require('./package').name,

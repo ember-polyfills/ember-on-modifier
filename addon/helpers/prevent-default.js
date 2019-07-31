@@ -1,6 +1,6 @@
+import { deprecate } from '@ember/application/deprecations';
 import { helper } from '@ember/component/helper';
 import { assert } from '@ember/debug';
-import { deprecate } from '@ember/application/deprecations';
 
 export function preventDefault([handler]) {
   deprecate(

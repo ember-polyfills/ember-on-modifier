@@ -1,5 +1,3 @@
-import { module, test, skip } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
 import {
   render,
   click,
@@ -7,10 +5,16 @@ import {
   setupOnerror,
   resetOnerror
 } from '@ember/test-helpers';
-import hbs from 'htmlbars-inline-precompile';
+import { setupRenderingTest } from 'ember-qunit';
+import { module, test, skip } from 'qunit';
+
 import { set } from '@ember/object';
 import { run } from '@ember/runloop';
+
 import { gte } from 'ember-compatibility-helpers';
+
+import hbs from 'htmlbars-inline-precompile';
+
 import {
   testIfOnModifierPolyfilled,
   onModifierPolyfilled

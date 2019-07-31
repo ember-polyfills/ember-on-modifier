@@ -1,10 +1,11 @@
 /* eslint no-param-reassign: "off" */
 
-import { setModifierManager } from '@ember/modifier';
-import { addEventListener, removeEventListener } from '../utils/event-listener';
-import { assert } from '@ember/debug';
 import { deprecate } from '@ember/application/deprecations';
+import { assert } from '@ember/debug';
+import { setModifierManager } from '@ember/modifier';
 import { DEBUG } from '@glimmer/env';
+
+import { addEventListener, removeEventListener } from '../utils/event-listener';
 
 /**
  * These are private API and only used for testing instrumentation.

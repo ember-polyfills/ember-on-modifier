@@ -1,9 +1,11 @@
-import Application from '../app';
-import config from '../config/environment';
 import { setApplication } from '@ember/test-helpers';
 import { start } from 'ember-qunit';
 import QUnit from 'qunit';
+
 import require, { has } from 'require';
+
+import Application from '../app';
+import config from '../config/environment';
 // import { __counts } from 'ember-on-modifier/modifiers/on';
 
 let __counts = null;
