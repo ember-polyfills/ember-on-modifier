@@ -2,8 +2,9 @@ import { render, click } from '@ember/test-helpers';
 import { setupRenderingTest } from 'ember-qunit';
 import { module } from 'qunit';
 
-import hbs from 'htmlbars-inline-precompile';
 import require from 'require';
+
+import hbs from 'htmlbars-inline-precompile';
 
 import {
   testIfEventHelpersInstalled,
