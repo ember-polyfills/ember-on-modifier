@@ -33,7 +33,7 @@
     "ember-modifier-manager-polyfill": "^1.1.0"
   },
   "devDependencies": {
-    "@clark/eslint-config-ember": "^1.12.0",
+    "@clark/eslint-config-ember": "^1.14.0",
     "@clark/eslint-config-node": "^1.12.0",
     "@ember/optional-features": "^0.7.0",
     "broccoli-asset-rev": "^3.0.0",
