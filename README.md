@@ -19,10 +19,10 @@ A polyfill for the `{{on}}` element modifier specified by
 ember install ember-on-modifier
 ```
 
-#### Compatibility
+## Compatibility
 
-- Ember.js v2.18 or above
-- ember-cli v2.13 or above
+* Completely inert when running `ember-source` 3.11 or higher
+* Tested against `ember-source` v2.13, v2.18, v3.4 in CI
 
 ## Usage
 
