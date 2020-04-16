@@ -2,7 +2,7 @@
 
 import { deprecate } from '@ember/application/deprecations';
 import { assert } from '@ember/debug';
-import { setModifierManager } from '@ember/modifier';
+import { capabilities, setModifierManager } from '@ember/modifier';
 import { DEBUG } from '@glimmer/env';
 
 import { addEventListener, removeEventListener } from '../utils/event-listener';
@@ -22,7 +22,7 @@ const assertValidEventOptions =
     const ALLOWED_EVENT_OPTIONS = ['capture', 'once', 'passive'];
     const joinOptions = options => options.map(o => `'${o}'`).join(', ');
 
-    return function(eventOptions, eventName) {
+    return function (eventOptions, eventName) {
       const invalidOptions = Object.keys(eventOptions).filter(
         o => !ALLOWED_EVENT_OPTIONS.includes(o)
       );
@@ -61,7 +61,7 @@ function setupListener(element, eventName, callback, eventOptions, params) {
 
   if (Array.isArray(params) && params.length > 0) {
     const _callback = callback;
-    callback = function(...args) {
+    callback = function (...args) {
       return _callback.call(this, ...params, ...args);
     };
   }
@@ -81,6 +81,9 @@ function destroyListener(element, eventName, callback, eventOptions) {
 
 export default setModifierManager(
   () => ({
+
+    capabilities: capabilities('3.13'),
+
     createModifier() {
       return {
         element: null,
@@ -142,5 +145,5 @@ export default setModifierManager(
       destroyListener(element, eventName, callback, eventOptions);
     }
   }),
-  class OnModifier {}
+  class OnModifier { }
 );
