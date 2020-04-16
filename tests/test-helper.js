@@ -20,7 +20,7 @@ QUnit.testStart(() => {
   }
 });
 
-QUnit.assert.counts = function(
+QUnit.assert.counts = function (
   expected,
   message = `counters have incremented by ${JSON.stringify(expected)}`
 ) {

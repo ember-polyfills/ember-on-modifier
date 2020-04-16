@@ -22,7 +22,7 @@ const assertValidEventOptions =
     const ALLOWED_EVENT_OPTIONS = ['capture', 'once', 'passive'];
     const joinOptions = options => options.map(o => `'${o}'`).join(', ');
 
-    return function(eventOptions, eventName) {
+    return function (eventOptions, eventName) {
       const invalidOptions = Object.keys(eventOptions).filter(
         o => !ALLOWED_EVENT_OPTIONS.includes(o)
       );
@@ -61,7 +61,7 @@ function setupListener(element, eventName, callback, eventOptions, params) {
 
   if (Array.isArray(params) && params.length > 0) {
     const _callback = callback;
-    callback = function(...args) {
+    callback = function (...args) {
       return _callback.call(this, ...params, ...args);
     };
   }
@@ -95,10 +95,7 @@ export default setModifierManager(
     installModifier(
       state,
       element,
-      {
-        positional: [eventName, callback, ...params],
-        named: eventOptions
-      }
+      { positional: [eventName, callback, ...params], named: eventOptions }
     ) {
       state.callback = setupListener(
         element,
@@ -116,10 +113,7 @@ export default setModifierManager(
 
     updateModifier(
       state,
-      {
-        positional: [eventName, callback, ...params],
-        named: eventOptions
-      }
+      { positional: [eventName, callback, ...params], named: eventOptions }
     ) {
       destroyListener(
         state.element,

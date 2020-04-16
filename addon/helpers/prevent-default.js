@@ -17,7 +17,7 @@ export function preventDefault([handler]) {
     !handler || typeof handler === 'function'
   );
 
-  return function(event) {
+  return function (event) {
     assert(
       `Expected '${event}' to be an Event and have a 'preventDefault' method.`,
       event && typeof event.preventDefault === 'function'

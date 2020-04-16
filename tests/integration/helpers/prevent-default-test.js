@@ -11,10 +11,10 @@ import {
   skipIfEventHelpersInstalled
 } from '../../helpers/ember-event-helpers';
 
-module('Integration | Helper | prevent-default', function(hooks) {
+module('Integration | Helper | prevent-default', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.onSubmit = event => {
       // In case the submit event is not prevented, we still want to prevent the
       // actual form submission. Otherwise we accidentally abort all tests by
@@ -26,7 +26,7 @@ module('Integration | Helper | prevent-default', function(hooks) {
 
   testIfEventHelpersInstalled(
     'prevent-default is stripped from the build',
-    function(assert) {
+    function (assert) {
       assert.notOk(
         require.has('ember-on-modifier/helpers/prevent-default'),
         'ember-on-modifier `prevent-default` is stripped'
@@ -41,7 +41,7 @@ module('Integration | Helper | prevent-default', function(hooks) {
   // The rest of this test suite relies on this.
   skipIfEventHelpersInstalled(
     'a submit button works in tests and submits the form',
-    async function(assert) {
+    async function (assert) {
       assert.expect(1);
 
       this.onSubmit = event => {
@@ -61,7 +61,7 @@ module('Integration | Helper | prevent-default', function(hooks) {
 
   skipIfEventHelpersInstalled(
     '{{on "click" (prevent-default)}}',
-    async function(assert) {
+    async function (assert) {
       assert.expect(0);
 
       await render(hbs`
@@ -76,7 +76,7 @@ module('Integration | Helper | prevent-default', function(hooks) {
 
   skipIfEventHelpersInstalled(
     '{{on "click" this.onClick}} {{on "click" (prevent-default)}}',
-    async function(assert) {
+    async function (assert) {
       assert.expect(1);
 
       this.onClick = event => assert.ok(event instanceof Event);
@@ -99,7 +99,7 @@ module('Integration | Helper | prevent-default', function(hooks) {
 
   skipIfEventHelpersInstalled(
     '{{on "click" (prevent-default)}} {{on "click" this.onClick}}',
-    async function(assert) {
+    async function (assert) {
       assert.expect(1);
 
       this.onClick = event => assert.ok(event instanceof Event);
@@ -122,7 +122,7 @@ module('Integration | Helper | prevent-default', function(hooks) {
 
   skipIfEventHelpersInstalled(
     '{{on "click" (prevent-default this.onClick)}}',
-    async function(assert) {
+    async function (assert) {
       assert.expect(1);
 
       this.onClick = event => assert.ok(event instanceof Event);

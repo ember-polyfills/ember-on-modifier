@@ -20,14 +20,14 @@ import {
   onModifierPolyfilled
 } from '../../helpers/ember-on-modifier-polyfill';
 
-module('Integration | Modifier | on', function(hooks) {
+module('Integration | Modifier | on', function (hooks) {
   setupRenderingTest(hooks);
   hooks.afterEach(() => resetOnerror());
 
-  testIfOnModifierPolyfilled('it basically works', async function(assert) {
+  testIfOnModifierPolyfilled('it basically works', async function (assert) {
     assert.expect(6);
 
-    this.someMethod = function(event) {
+    this.someMethod = function (event) {
       assert.ok(
         this instanceof HTMLButtonElement && this.dataset.foo === 'some-thing',
         'this context is the element'
@@ -55,7 +55,7 @@ module('Integration | Modifier | on', function(hooks) {
     assert.counts({ adds: 1, removes: 0 });
   });
 
-  testIfOnModifierPolyfilled('it can accept the `once` option', async function(
+  testIfOnModifierPolyfilled('it can accept the `once` option', async function (
     assert
   ) {
     assert.expect(3);
@@ -79,7 +79,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   testIfOnModifierPolyfilled(
     'unrelated property changes do not break the `once` option',
-    async function(assert) {
+    async function (assert) {
       assert.expect(5);
 
       let n = 0;
@@ -110,7 +110,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   testIfOnModifierPolyfilled(
     'unrelated property changes do not cause the listener to re-register',
-    async function(assert) {
+    async function (assert) {
       assert.expect(2);
 
       this.someMethod = () => {};
@@ -129,7 +129,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   testIfOnModifierPolyfilled(
     'it can accept the `capture` option',
-    async function(assert) {
+    async function (assert) {
       assert.expect(5);
 
       this.outerListener = () => assert.step('outer');
@@ -156,7 +156,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   testIfOnModifierPolyfilled(
     'it can accept the `once` & `capture` option combined',
-    async function(assert) {
+    async function (assert) {
       assert.expect(6);
 
       this.outerListener = () => assert.step('outer');
@@ -184,7 +184,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   testIfOnModifierPolyfilled(
     'it raises an assertion when calling `event.preventDefault()` on a `passive` event',
-    async function(assert) {
+    async function (assert) {
       assert.expect(3);
 
       this.handler = event => {
@@ -208,10 +208,10 @@ module('Integration | Modifier | on', function(hooks) {
 
   (gte('3.0.0') && onModifierPolyfilled // I have no clue how to catch the error in Ember 2.13
     ? test
-    : skip)('it raises an assertion if an invalid event option is passed in', async function(assert) {
+    : skip)('it raises an assertion if an invalid event option is passed in', async function (assert) {
     assert.expect(2);
 
-    setupOnerror(function(error) {
+    setupOnerror(function (error) {
       assert.strictEqual(
         error.message,
         "Assertion Failed: ember-on-modifier: Provided invalid event options ('nope', 'foo') to 'click' event listener. Only these options are valid: 'capture', 'once', 'passive'",
@@ -228,7 +228,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   (gte('3.0.0') && onModifierPolyfilled // I have no clue how to catch the error in Ember 2.13
     ? test
-    : skip)('it raises an assertion if an invalid event name or callback is passed in', async function(assert) {
+    : skip)('it raises an assertion if an invalid event name or callback is passed in', async function (assert) {
     setupOnerror(error => assert.step(error.message));
 
     await render(hbs`<button {{on "click" 10}}></button>`);
@@ -250,7 +250,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   (gte('3.0.0') && onModifierPolyfilled // I have no clue how to catch the error in Ember 2.13
     ? test
-    : skip)('it recovers after updating to incorrect parameters', async function(assert) {
+    : skip)('it recovers after updating to incorrect parameters', async function (assert) {
     assert.expect(9);
 
     const errors = [];
@@ -287,7 +287,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   testIfOnModifierPolyfilled(
     'it passes additional parameters through to the listener',
-    async function(assert) {
+    async function (assert) {
       assert.expect(11);
 
       this.a = 1;
@@ -315,7 +315,11 @@ module('Integration | Modifier | on', function(hooks) {
       assert.counts({ adds: 2, removes: 1 });
 
       assert.verifySteps(
-        [[1, 3, 5], [1, 3, 5], [1, 3, 7]].map(s => s.join('-')),
+        [
+          [1, 3, 5],
+          [1, 3, 5],
+          [1, 3, 7]
+        ].map(s => s.join('-')),
         'parameters were passed through and updated on change'
       );
     }
@@ -323,7 +327,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   testIfOnModifierPolyfilled(
     'it is re-registered, when the callback changes',
-    async function(assert) {
+    async function (assert) {
       assert.expect(6);
 
       let a = 0;
@@ -350,7 +354,7 @@ module('Integration | Modifier | on', function(hooks) {
 
   testIfOnModifierPolyfilled(
     'it is re-registered, when the callback changes and `capture` is used',
-    async function(assert) {
+    async function (assert) {
       assert.expect(9);
 
       let a = 0;

@@ -79,7 +79,7 @@ export function addEventListenerOnce(
 export function addEventListener(element, eventName, callback, eventOptions) {
   const _callback =
     DEBUG && eventOptions && eventOptions.passive
-      ? function(event) {
+      ? function (event) {
           event.preventDefault = () => {
             assert(
               `ember-on-modifier: You marked this listener as 'passive', meaning that you must not call 'event.preventDefault()'.`
