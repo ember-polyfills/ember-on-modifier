@@ -12,7 +12,7 @@ cache:
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of nodejs
-  - ps: Install-Product node 8
+  - ps: Install-Product node 12
   - npm version
   - npm config set spin false
   - appveyor-retry npm install -g yarn
