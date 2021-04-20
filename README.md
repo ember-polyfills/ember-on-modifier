@@ -5,7 +5,7 @@
 [![Download Total](https://img.shields.io/npm/dt/ember-on-modifier.svg)](http://badge.fury.io/js/ember-on-modifier)
 [![Ember Observer Score](https://emberobserver.com/badges/ember-on-modifier.svg)](https://emberobserver.com/addons/ember-on-modifier)
 [![Ember Versions](https://img.shields.io/badge/Ember.js%20Versions-%5E2.18%20%7C%7C%20%5E3.0-brightgreen.svg)](https://travis-ci.org/buschtoens/ember-on-modifier)
-[![ember-cli Versions](https://img.shields.io/badge/ember--cli%20Versions-%5E2.13%20%7C%7C%20%5E3.0-brightgreen.svg)](https://travis-ci.org/buschtoens/ember-on-modifier)
+[![ember-cli Versions](https://img.shields.io/badge/ember--cli%20Versions-%5E2.12%20%7C%7C%20%5E3.0-brightgreen.svg)](https://travis-ci.org/buschtoens/ember-on-modifier)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![dependencies](https://img.shields.io/david/buschtoens/ember-on-modifier.svg)](https://david-dm.org/buschtoens/ember-on-modifier)
 [![devDependencies](https://img.shields.io/david/dev/buschtoens/ember-on-modifier.svg)](https://david-dm.org/buschtoens/ember-on-modifier)
@@ -22,7 +22,7 @@ ember install ember-on-modifier
 ## Compatibility
 
 * Completely inert when running `ember-source` 3.11 or higher
-* Tested against `ember-source` v2.13, v2.18, v3.4 in CI
+* Tested against `ember-source` v2.12, v2.18, v3.4 in CI
 
 ## Usage
 
