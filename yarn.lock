@@ -3683,6 +3683,15 @@ ember-cli-version-checker@^4.1.0:
     semver "^6.3.0"
     silent-error "^1.1.1"
 
+ember-cli-version-checker@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/ember-cli-version-checker/-/ember-cli-version-checker-5.0.2.tgz#7e96157be4b13b083a68078b188820193275d8c4"
+  integrity sha512-cqFrIg9++GKdpMv2DP8pryAhTcmCYUL2hzHatLwkcJe23s+ioZ0JQWte0avxZ5lJnwn5e3kzUKkLkDfHDFBMUw==
+  dependencies:
+    resolve-package-path "^2.0.0"
+    semver "^7.1.3"
+    silent-error "^1.1.1"
+
 ember-cli@~3.15.1:
   version "3.15.1"
   resolved "https://registry.yarnpkg.com/ember-cli/-/ember-cli-3.15.1.tgz#389604474c40f02870432659072304f192db07c5"
